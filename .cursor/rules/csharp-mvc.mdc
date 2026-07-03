@@ -1,0 +1,35 @@
+---
+description: C# and ASP.NET MVC conventions for controllers, repositories, entities
+globs: "**/*.cs"
+alwaysApply: false
+---
+
+# C# / MVC Conventions
+
+## Naming
+- Classes/methods/properties: PascalCase
+- Parameters/locals: camelCase
+- Private fields: `_camelCase`
+- Interfaces: `I` + PascalCase
+
+## Controllers
+```csharp
+[Authorize]
+public class TaskController : Controller
+{
+    // Validate first, then business logic
+    if (!ModelState.IsValid) return View(model);
+
+    // Filter by current user via repository — never trust client ids alone
+}
+```
+
+## Data access
+- Repositories in `PersonalTaskManager.Infrastructure`
+- Entities/enums in `PersonalTaskManager.Core`
+- LINQ must include ownership: `Project.UserId == currentUserId`
+
+## Do not
+- Query `_context` directly in Views
+- Swallow exceptions silently
+- Store plain-text passwords

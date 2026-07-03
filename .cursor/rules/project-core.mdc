@@ -1,0 +1,32 @@
+---
+description: Core standards for Personal Task Manager - phase scope, docs, git
+alwaysApply: true
+---
+
+# Personal Task Manager — Core Rules
+
+## Before coding
+1. Read `AGENTS.md` and current phase in `docs/phases/phase-XX-*.md`
+2. Stay within current phase scope unless user explicitly asks for more
+3. Follow `docs/CONVENTIONS.md` and `docs/ARCHITECTURE.md`
+
+## Stack (do not change without user request)
+- ASP.NET MVC 5 on .NET Framework 4.8
+- EF6 Code First + Oracle
+- Bootstrap 5, jQuery, Razor
+
+## Security
+- Never commit real connection strings or passwords
+- Always filter data by current user (no cross-user access)
+- Server-side validation required: `ModelState.IsValid`
+- POST actions: `[ValidateAntiForgeryToken]`
+
+## Git
+- Branch: `feature/phase-XX-name` or `fix/description`
+- Commit: `feat(scope): message` per CONVENTIONS.md
+- Do not commit unless user asks
+
+## Code quality
+- ViewModels for views, not Entities
+- Comment business logic in controllers/repositories
+- Small focused diffs; match existing patterns

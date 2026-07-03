@@ -1,0 +1,67 @@
+## Visual Studio / .NET
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Publish
+PublishProfiles/
+*.pubxml
+*.publishproj
+
+# Test
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Rider / VS Code
+.idea/
+*.sln.iml
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Secrets — never commit
+appsettings.*.json
+Web.*.config
+!Web.config
+!Web.Debug.config
+!Web.Release.config
+*.secrets.config
+connectionstrings.local.config
+
+# EF
+*.edmx.diagram
+*.edmx.sql
+
+# Oracle local
+tnsnames.ora

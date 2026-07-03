@@ -1,0 +1,30 @@
+---
+description: Razor view and ViewModel patterns with validation
+globs: "**/*.cshtml"
+alwaysApply: false
+---
+
+# Razor View Rules
+
+- Use strongly-typed views: `@model XxxViewModel`
+- Helpers: `@Html.LabelFor`, `@Html.TextBoxFor`, `@Html.ValidationMessageFor`
+- Layout: `Views/Shared/_Layout.cshtml`
+- Partials prefix `_`: `_TaskCard.cshtml`
+
+## Forms
+```cshtml
+@using (Html.BeginForm("Create", "Task", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <!-- fields -->
+}
+```
+
+## Client validation
+- Enable unobtrusive validation in layout
+- Mirror server Data Annotations on ViewModels
+
+## UI
+- Bootstrap 5 classes for layout
+- Vietnamese labels OK; keep code identifiers in English
