@@ -1,43 +1,120 @@
-﻿@{
-    ViewBag.Title = "Trang chủ";
+﻿@model PersonalTaskManager.Web.Models.Home.DashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="hero text-center py-5">
-    <h1 class="display-5 fw-bold">Xin chào, @ViewBag.Username!</h1>
-    <p class="lead text-muted">Personal Task Manager — @ViewBag.Phase</p>
-    <hr class="my-4" />
-    <p>Bạn đã đăng nhập thành công. MVP mentor đã sẵn sàng — quản lý dự án, task và báo cáo.</p>
-    <a class="btn btn-primary btn-lg me-2" href="@Url.Action("Index", "Project")">Xem dự án</a>
-    <a class="btn btn-outline-primary btn-lg me-2" href="@Url.Action("Index", "Report")">Báo cáo</a>
-    <a class="btn btn-outline-secondary btn-lg" href="@Url.Action("About", "Home")">Kiểm tra DB</a>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Xin chào, @Model.Username!</h1>
+        <p class="text-muted mb-0">Tổng quan task và dự án của bạn</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-primary" href="@Url.Action("Create", "Project")">+ Dự án mới</a>
+        <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Report")">Báo cáo</a>
+    </div>
 </div>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Dự án</h5>
-                <p class="card-text">Tạo và quản lý dự án cá nhân — đã sẵn sàng.</p>
-                <a class="btn btn-sm btn-primary" href="@Url.Action("Index", "Project")">Mở dự án</a>
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card dashboard-stat shadow-sm h-100">
+            <div class="card-body text-center py-3">
+                <div class="display-6 fw-bold text-primary">@Model.ProjectCount</div>
+                <div class="small text-muted">Dự án</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Task / Kanban</h5>
-                <p class="card-text">Kéo thả task giữa các cột — SortableJS Phase 8.</p>
-                <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Index", "Project")">Mở Kanban</a>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card dashboard-stat shadow-sm h-100">
+            <div class="card-body text-center py-3">
+                <div class="display-6 fw-bold">@Model.TotalTasks</div>
+                <div class="small text-muted">Tổng task</div>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Báo cáo</h5>
-                <p class="card-text">Tiến độ hoàn thành theo dự án — progress bar.</p>
-                <a class="btn btn-sm btn-primary" href="@Url.Action("Index", "Report")">Xem báo cáo</a>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card dashboard-stat shadow-sm h-100">
+            <div class="card-body text-center py-3">
+                <div class="display-6 fw-bold text-secondary">@Model.ToDoTasks</div>
+                <div class="small text-muted">Cần làm</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card dashboard-stat shadow-sm h-100">
+            <div class="card-body text-center py-3">
+                <div class="display-6 fw-bold text-info">@Model.InProgressTasks</div>
+                <div class="small text-muted">Đang làm</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card dashboard-stat shadow-sm h-100">
+            <div class="card-body text-center py-3">
+                <div class="display-6 fw-bold text-success">@Model.DoneTasks</div>
+                <div class="small text-muted">Hoàn thành</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl-2">
+        <div class="card dashboard-stat shadow-sm h-100 @(Model.OverdueTasks > 0 ? "border-danger" : "")">
+            <div class="card-body text-center py-3">
+                <div class="display-6 fw-bold @(Model.OverdueTasks > 0 ? "text-danger" : "")">@Model.OverdueTasks</div>
+                <div class="small text-muted">Quá hạn</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                <h2 class="h6 mb-0">Dự án của bạn</h2>
+                <a class="small" href="@Url.Action("Index", "Project")">Xem tất cả</a>
+            </div>
+            <div class="card-body p-0">
+                @if (Model.Projects.Count == 0)
+                {
+                    <p class="text-muted p-3 mb-0">Chưa có dự án. <a href="@Url.Action("Create", "Project")">Tạo dự án đầu tiên</a></p>
+                }
+                else
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var project in Model.Projects)
+                        {
+                            var pct = project.TotalTasks == 0 ? 0 : (int)Math.Round(project.DoneTasks * 100.0 / project.TotalTasks);
+                            <div class="list-group-item">
+                                <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                                    <div>
+                                        <strong>@project.ProjectName</strong>
+                                        <div class="small text-muted">
+                                            @project.DoneTasks / @project.TotalTasks task hoàn thành
+                                            @if (project.OverdueTasks > 0)
+                                            {
+                                                <span class="text-danger ms-1">· @project.OverdueTasks quá hạn</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Index", "Kanban", new { projectId = project.ProjectId })">Kanban</a>
+                                </div>
+                                <div class="progress" style="height: 6px;" role="progressbar" aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar bg-success" style="width: @pct%"></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent">
+                <h2 class="h6 mb-0">Hoạt động gần đây</h2>
+            </div>
+            <div class="card-body p-0">
+                @Html.Partial("_ActivityTimeline", Model.RecentActivity)
             </div>
         </div>
     </div>

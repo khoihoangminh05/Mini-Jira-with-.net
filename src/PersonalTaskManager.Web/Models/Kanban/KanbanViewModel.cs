@@ -15,6 +15,9 @@ namespace PersonalTaskManager.Web.Models.Kanban
         public IList<KanbanTaskCardViewModel> InProgress { get; set; } = new List<KanbanTaskCardViewModel>();
 
         public IList<KanbanTaskCardViewModel> Done { get; set; } = new List<KanbanTaskCardViewModel>();
+
+        public IList<PersonalTaskManager.Web.Models.Activity.ActivityLogItemViewModel> ActivityLogs { get; set; }
+            = new List<PersonalTaskManager.Web.Models.Activity.ActivityLogItemViewModel>();
     }
 
     public class KanbanTaskCardViewModel

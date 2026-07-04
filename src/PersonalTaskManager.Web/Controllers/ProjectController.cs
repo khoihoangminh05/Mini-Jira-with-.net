@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using PersonalTaskManager.Core.Interfaces;
 using PersonalTaskManager.Infrastructure.Repositories;
+using PersonalTaskManager.Web.Helpers;
 using PersonalTaskManager.Web.Models.Project;
 
 namespace PersonalTaskManager.Web.Controllers
@@ -51,7 +52,14 @@ namespace PersonalTaskManager.Web.Controllers
             }
 
             var userId = RequireUserId();
-            _projectRepository.Create(userId, model.Name, model.Description);
+            var project = _projectRepository.Create(userId, model.Name, model.Description);
+
+            ActivityLogger.TryLog(
+                userId,
+                project.ProjectId,
+                null,
+                "ProjectCreated",
+                string.Format("Tạo dự án \"{0}\"", project.Name));
 
             TempData["SuccessMessage"] = "Đã tạo dự án mới.";
             return RedirectToAction("Index");

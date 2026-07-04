@@ -13,11 +13,13 @@ namespace PersonalTaskManager.Web.Controllers
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IProjectRepository _projectRepository;
+        private readonly IActivityLogRepository _activityLogRepository;
 
         public KanbanController()
         {
             _taskRepository = new TaskRepository();
             _projectRepository = new ProjectRepository();
+            _activityLogRepository = new ActivityLogRepository();
         }
 
         public ActionResult Index(int projectId)
@@ -41,10 +43,19 @@ namespace PersonalTaskManager.Web.Controllers
                 Done = cards.Where(c => c.Status == TaskStatus.Done).ToList()
             };
 
+            try
+            {
+                model.ActivityLogs = ActivityLogMapper.ToViewModels(
+                    _activityLogRepository.GetByProjectId(projectId, userId, 20));
+            }
+            catch
+            {
+                model.ActivityLogs = new System.Collections.Generic.List<Models.Activity.ActivityLogItemViewModel>();
+            }
+
             return View(model);
         }
 
-        /// <summary>Fallback khi tắt JavaScript — POST form thông thường.</summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Start(int id, int projectId)
@@ -69,12 +80,23 @@ namespace PersonalTaskManager.Web.Controllers
         private ActionResult ChangeStatus(int id, int projectId, string action)
         {
             var userId = RequireUserId();
+            var task = _taskRepository.GetByIdForUser(id, userId);
             TaskStatus newStatus;
             string message;
 
             if (!TaskStatusTransition.TryApply(_taskRepository, id, userId, projectId, action, out newStatus, out message))
             {
                 return HttpNotFound();
+            }
+
+            if (task != null)
+            {
+                ActivityLogger.TryLog(
+                    userId,
+                    projectId,
+                    id,
+                    "StatusChange",
+                    string.Format("Task \"{0}\": {1}", task.Title, message));
             }
 
             TempData["SuccessMessage"] = message;
