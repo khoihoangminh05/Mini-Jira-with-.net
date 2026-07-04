@@ -1,10 +1,13 @@
 /**
- * Kanban Ajax — Phase 7: cập nhật trạng thái không reload (fallback form POST khi tắt JS).
+ * Kanban — Phase 7 Ajax + Phase 8 SortableJS drag-drop.
+ * Quy tắc kéo: được phép thả vào bất kỳ cột nào (To Do → Done trực tiếp OK).
  */
 (function ($) {
     'use strict';
 
     var columnMap = { 1: 'todo', 2: 'inprogress', 3: 'done' };
+    var statusMap = { todo: 1, inprogress: 2, done: 3 };
+    var sortableInstances = [];
 
     function getToken() {
         return $('#kanbanAntiForgeryForm input[name="__RequestVerificationToken"]').val()
@@ -50,15 +53,68 @@
         $card.attr('data-status', newStatus);
     }
 
-    function refreshCard($card, taskId, callback) {
-        $.get('/Task/Card', { id: taskId })
+    function refreshCard($card, taskId) {
+        return $.get('/Task/Card', { id: taskId })
             .done(function (html) {
                 var $new = $(html);
                 $card.replaceWith($new);
-                if (callback) callback($new);
+                return $new;
             })
             .fail(function () {
                 showToast('Không tải lại được card.', 'danger');
+            });
+    }
+
+    function revertDrag(evt) {
+        var item = evt.item;
+        var from = evt.from;
+        if (evt.from === evt.to) {
+            if (evt.oldIndex < evt.newIndex) {
+                from.insertBefore(item, from.children[evt.oldIndex]);
+            } else {
+                from.insertBefore(item, from.children[evt.oldIndex + 1] || null);
+            }
+        } else {
+            from.insertBefore(item, from.children[evt.oldIndex] || null);
+        }
+        updateColumnCounts();
+    }
+
+    function postMove(taskId, projectId, newStatus, newSortOrder, $card, evt) {
+        $card.addClass('kanban-card-loading');
+
+        return $.ajax({
+            url: '/Task/Move',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                __RequestVerificationToken: getToken(),
+                taskId: taskId,
+                projectId: projectId,
+                newStatus: newStatus,
+                newSortOrder: newSortOrder
+            }
+        })
+            .done(function (res) {
+                if (res && res.success) {
+                    updateColumnCounts();
+                    refreshCard($card, taskId);
+                    showToast(res.message, 'success');
+                } else {
+                    revertDrag(evt);
+                    showToast((res && res.message) || 'Di chuyển thất bại.', 'danger');
+                }
+            })
+            .fail(function (xhr) {
+                revertDrag(evt);
+                var msg = 'Lỗi máy chủ. Vui lòng thử lại.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    msg = xhr.responseJSON.message;
+                }
+                showToast(msg, 'danger');
+            })
+            .always(function () {
+                $card.removeClass('kanban-card-loading');
             });
     }
 
@@ -108,7 +164,6 @@
                         msg = xhr.responseJSON.message;
                     }
                     showToast(msg, 'danger');
-                    // rollback vị trí card nếu đã di chuyển optimistic (chưa di chuyển trước response)
                     var $back = $('.kanban-column-body[data-column="' + originalColumn + '"]');
                     if ($card.parent()[0] !== $back[0]) {
                         $back.find('.kanban-empty-msg').remove();
@@ -125,9 +180,54 @@
         });
     }
 
+    function initSortable() {
+        if (typeof Sortable === 'undefined') {
+            return;
+        }
+
+        sortableInstances.forEach(function (s) { s.destroy(); });
+        sortableInstances = [];
+
+        document.querySelectorAll('.kanban-column-body').forEach(function (el) {
+            var instance = Sortable.create(el, {
+                group: 'kanban',
+                animation: 180,
+                draggable: '.kanban-card',
+                handle: '.kanban-drag-handle',
+                ghostClass: 'kanban-sortable-ghost',
+                dragClass: 'kanban-sortable-drag',
+                delay: 100,
+                delayOnTouchOnly: true,
+                onEnd: function (evt) {
+                    if (evt.from === evt.to && evt.oldIndex === evt.newIndex) {
+                        return;
+                    }
+
+                    var $item = $(evt.item);
+                    var taskId = parseInt($item.data('task-id'), 10);
+                    var projectId = parseInt($('.kanban-board').data('project-id'), 10);
+                    var columnKey = evt.to.getAttribute('data-column');
+                    var newStatus = statusMap[columnKey];
+                    var newSortOrder = evt.newIndex;
+
+                    if (!taskId || !projectId || !newStatus) {
+                        revertDrag(evt);
+                        return;
+                    }
+
+                    evt.to.querySelectorAll('.kanban-empty-msg').forEach(function (n) { n.remove(); });
+                    updateColumnCounts();
+                    postMove(taskId, projectId, newStatus, newSortOrder, $item, evt);
+                }
+            });
+            sortableInstances.push(instance);
+        });
+    }
+
     $(function () {
         if ($('.kanban-board').length) {
             bindKanbanAjax();
+            initSortable();
         }
     });
 })(jQuery);

@@ -32,5 +32,7 @@ namespace PersonalTaskManager.Core.Interfaces
         bool SoftDelete(int taskId, int userId);
 
         bool UpdateStatus(int taskId, int userId, TaskStatus status);
+
+        bool MoveTask(int taskId, int userId, int projectId, TaskStatus newStatus, int newSortOrder);
     }
 }
