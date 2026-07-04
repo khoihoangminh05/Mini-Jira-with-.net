@@ -7,8 +7,9 @@
     <h1 class="display-5 fw-bold">Xin chào, @ViewBag.Username!</h1>
     <p class="lead text-muted">Personal Task Manager — @ViewBag.Phase</p>
     <hr class="my-4" />
-    <p>Bạn đã đăng nhập thành công. Tiếp theo: quản lý dự án và task.</p>
+    <p>Bạn đã đăng nhập thành công. MVP mentor đã sẵn sàng — quản lý dự án, task và báo cáo.</p>
     <a class="btn btn-primary btn-lg me-2" href="@Url.Action("Index", "Project")">Xem dự án</a>
+    <a class="btn btn-outline-primary btn-lg me-2" href="@Url.Action("Index", "Report")">Báo cáo</a>
     <a class="btn btn-outline-secondary btn-lg" href="@Url.Action("About", "Home")">Kiểm tra DB</a>
 </div>
 
@@ -35,7 +36,8 @@
         <div class="card h-100 shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Báo cáo</h5>
-                <p class="card-text">Tiến độ hoàn thành — Phase 6.</p>
+                <p class="card-text">Tiến độ hoàn thành theo dự án — progress bar.</p>
+                <a class="btn btn-sm btn-primary" href="@Url.Action("Index", "Report")">Xem báo cáo</a>
             </div>
         </div>
     </div>
