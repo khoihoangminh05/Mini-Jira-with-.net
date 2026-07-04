@@ -129,5 +129,25 @@ namespace PersonalTaskManager.Infrastructure.Repositories
                 return true;
             }
         }
+
+        public bool UpdateStatus(int taskId, int userId, TaskStatus status)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var task = context.Tasks
+                    .Where(t => t.TaskId == taskId && !t.IsDeleted)
+                    .FirstOrDefault(t => context.Projects.Any(
+                        p => p.ProjectId == t.ProjectId && p.UserId == userId && !p.IsDeleted));
+
+                if (task == null)
+                {
+                    return false;
+                }
+
+                task.Status = status;
+                context.SaveChanges();
+                return true;
+            }
+        }
     }
 }

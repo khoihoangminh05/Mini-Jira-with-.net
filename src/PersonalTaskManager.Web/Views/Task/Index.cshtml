@@ -17,9 +17,12 @@
         <h1 class="h3 mb-1">@Model.ProjectName</h1>
         <p class="text-muted mb-0">Danh sách task</p>
     </div>
-    <a class="btn btn-primary" href="@Url.Action("Create", new { projectId = Model.ProjectId })">
-        + Tạo task
-    </a>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-outline-primary" href="@Url.Action("Index", "Kanban", new { projectId = Model.ProjectId })">Kanban</a>
+        <a class="btn btn-primary" href="@Url.Action("Create", new { projectId = Model.ProjectId })">
+            + Tạo task
+        </a>
+    </div>
 </div>
 
 @if (Model.Tasks.Count == 0)

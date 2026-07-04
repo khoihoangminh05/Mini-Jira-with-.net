@@ -30,5 +30,7 @@ namespace PersonalTaskManager.Core.Interfaces
             DateTime? deadline);
 
         bool SoftDelete(int taskId, int userId);
+
+        bool UpdateStatus(int taskId, int userId, TaskStatus status);
     }
 }

@@ -32,9 +32,9 @@ gantt
 | **1** | [Scaffold + Database](phases/phase-01-scaffold-database.md) | Solution MVC, EF, schema Oracle | `feature/phase-01-scaffold` | 🟢 Hoàn thành |
 | **2** | [Authentication](phases/phase-02-authentication.md) | Login, Register, Logout, Layout | `feature/phase-02-auth` | 🟢 Hoàn thành |
 | **3** | [Project CRUD](phases/phase-03-project-crud.md) | CRUD dự án, phân quyền theo user | `feature/phase-03-project` | 🟢 Hoàn thành |
-| **4** | [Task CRUD](phases/phase-04-task-crud.md) | CRUD task, enum priority/status | `feature/phase-04-task` | 🔵 Hiện tại |
-| **5** | [Kanban Basic](phases/phase-05-kanban-basic.md) | 3 cột, nút Start/Done | `feature/phase-05-kanban` | ⚪ Tiếp theo |
-| **6** | [Reports](phases/phase-06-reports.md) | Progress bar % hoàn thành | `feature/phase-06-reports` | ⚪ |
+| **4** | [Task CRUD](phases/phase-04-task-crud.md) | CRUD task, enum priority/status | `feature/phase-04-task` | 🟢 Hoàn thành |
+| **5** | [Kanban Basic](phases/phase-05-kanban-basic.md) | 3 cột, nút Start/Done | `feature/phase-05-kanban` | 🔵 Hiện tại |
+| **6** | [Reports](phases/phase-06-reports.md) | Progress bar % hoàn thành | `feature/phase-06-reports` | ⚪ Tiếp theo |
 | **7** | [Ajax & Validation](phases/phase-07-ajax-validation.md) | Cập nhật không reload, validate đầy đủ | `feature/phase-07-ajax` | ⚪ |
 | **8** | [Drag-Drop Kanban](phases/phase-08-drag-drop.md) | SortableJS, reorder | `feature/phase-08-dragdrop` | ⚪ |
 | **9** | [Polish & Extras](phases/phase-09-polish.md) | Filter, labels, activity log, dark mode | `feature/phase-09-polish` | ⚪ |

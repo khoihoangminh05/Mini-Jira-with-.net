@@ -41,7 +41,8 @@ else
                         }
                         <small class="text-muted d-block mb-3">Tạo: @project.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
                         <div class="d-flex flex-wrap gap-2 mt-auto">
-                            <a class="btn btn-primary btn-sm" href="@Url.Action("Index", "Task", new { projectId = project.ProjectId })">Xem task</a>
+                            <a class="btn btn-primary btn-sm" href="@Url.Action("Index", "Kanban", new { projectId = project.ProjectId })">Kanban</a>
+                            <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Index", "Task", new { projectId = project.ProjectId })">Task</a>
                             <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Edit", new { id = project.ProjectId })">Sửa</a>
                             <button type="button"
                                     class="btn btn-outline-danger btn-sm"

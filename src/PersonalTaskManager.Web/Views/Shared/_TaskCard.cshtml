@@ -1,0 +1,67 @@
+@model PersonalTaskManager.Web.Models.Kanban.KanbanTaskCardViewModel
+@using PersonalTaskManager.Web.Helpers
+
+<div class="card kanban-card shadow-sm mb-3 @(Model.IsOverdue ? "border-danger" : "")">
+    <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+            <h3 class="h6 mb-0 flex-grow-1">@Model.Title</h3>
+            <span class="badge @TaskEnumHelper.GetPriorityBadgeClass(Model.Priority)">@Model.PriorityLabel</span>
+        </div>
+
+        @if (Model.Deadline.HasValue)
+        {
+            <p class="small mb-2 @(Model.IsOverdue ? "text-danger fw-semibold" : "text-muted")">
+                @if (Model.IsOverdue)
+                {
+                    <span>⚠ Quá hạn: </span>
+                }
+                else
+                {
+                    <span>Hạn: </span>
+                }
+                @Model.Deadline.Value.ToString("dd/MM/yyyy")
+            </p>
+        }
+
+        <div class="d-flex flex-wrap gap-1 mt-2">
+            @if (Model.Status == PersonalTaskManager.Core.Enums.TaskStatus.ToDo)
+            {
+                using (Html.BeginForm("Start", "Kanban", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.TaskId" />
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                    <button type="submit" class="btn btn-primary btn-sm">Start</button>
+                }
+            }
+            else if (Model.Status == PersonalTaskManager.Core.Enums.TaskStatus.InProgress)
+            {
+                using (Html.BeginForm("Complete", "Kanban", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.TaskId" />
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                    <button type="submit" class="btn btn-success btn-sm">Hoàn thành</button>
+                }
+                using (Html.BeginForm("Reopen", "Kanban", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.TaskId" />
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Mở lại</button>
+                }
+            }
+            else if (Model.Status == PersonalTaskManager.Core.Enums.TaskStatus.Done)
+            {
+                using (Html.BeginForm("Reopen", "Kanban", FormMethod.Post, new { @class = "d-inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@Model.TaskId" />
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">Mở lại</button>
+                }
+            }
+            <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Edit", "Task", new { id = Model.TaskId })">Sửa</a>
+        </div>
+    </div>
+</div>

@@ -10,7 +10,7 @@ namespace PersonalTaskManager.Web.Controllers
         public ActionResult Index()
         {
             ViewBag.Username = CurrentUsername;
-            ViewBag.Phase = "Phase 4 — Task CRUD";
+            ViewBag.Phase = "Phase 5 — Kanban Basic";
             return View();
         }
 
