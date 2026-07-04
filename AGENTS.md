@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 7 — Ajax & Validation** (Kanban Ajax + remote validation Register)
+**Phase 8 — Drag-Drop Kanban** (SortableJS + Move API + Oracle SP script)
 
-Sang Phase 8 khi checklist `docs/phases/phase-07-ajax-validation.md` hoàn tất.
+Sang Phase 9 khi checklist `docs/phases/phase-08-drag-drop.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

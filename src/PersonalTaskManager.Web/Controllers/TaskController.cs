@@ -230,5 +230,33 @@ namespace PersonalTaskManager.Web.Controllers
 
             return PartialView("_TaskCard", TaskCardMapper.FromEntity(task));
         }
+
+        /// <summary>Drag-drop — đổi cột + sort order (Phase 8). Cho phép kéo trực tiếp giữa mọi cột.</summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult Move(int taskId, int projectId, int newStatus, int newSortOrder)
+        {
+            if (!System.Enum.IsDefined(typeof(TaskStatus), newStatus))
+            {
+                return Json(new { success = false, message = "Trạng thái không hợp lệ." });
+            }
+
+            var userId = RequireUserId();
+            var status = (TaskStatus)newStatus;
+
+            if (!_taskRepository.MoveTask(taskId, userId, projectId, status, newSortOrder))
+            {
+                return Json(new { success = false, message = "Không thể di chuyển task." });
+            }
+
+            return Json(new
+            {
+                success = true,
+                message = "Đã cập nhật vị trí task.",
+                taskId,
+                newStatus,
+                columnKey = TaskCardMapper.GetColumnKey(status)
+            });
+        }
     }
 }

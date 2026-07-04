@@ -24,7 +24,7 @@ User Id=APP_USER;Password=***;Data Source=localhost:1522/freepdb1;
 | Path | Nội dung |
 |------|----------|
 | `scripts/` | DDL, sequences, indexes, seed data |
-| `procedures/` | Oracle packages & stored procedures (phase 7+) |
+| `procedures/` | Oracle packages & SP — `001_pkg_task_move.sql` (Phase 8) |
 
 ## Quy ước đặt tên file
 
