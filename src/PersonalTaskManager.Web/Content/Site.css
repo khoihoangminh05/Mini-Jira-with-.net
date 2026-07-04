@@ -57,6 +57,11 @@ body {
     border: 1px solid #eee;
 }
 
+.kanban-card-loading {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
 @media (max-width: 991.98px) {
     .kanban-column-body {
         max-height: none;

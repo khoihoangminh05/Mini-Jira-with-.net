@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 6 — Reports** (progress bar % hoàn thành theo project — **MVP mentor xong**)
+**Phase 7 — Ajax & Validation** (Kanban Ajax + remote validation Register)
 
-Sang Phase 7 khi checklist `docs/phases/phase-06-reports.md` hoàn tất.
+Sang Phase 8 khi checklist `docs/phases/phase-07-ajax-validation.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

@@ -34,9 +34,9 @@ gantt
 | **3** | [Project CRUD](phases/phase-03-project-crud.md) | CRUD dự án, phân quyền theo user | `feature/phase-03-project` | 🟢 Hoàn thành |
 | **4** | [Task CRUD](phases/phase-04-task-crud.md) | CRUD task, enum priority/status | `feature/phase-04-task` | 🟢 Hoàn thành |
 | **5** | [Kanban Basic](phases/phase-05-kanban-basic.md) | 3 cột, nút Start/Done | `feature/phase-05-kanban` | 🟢 Hoàn thành |
-| **6** | [Reports](phases/phase-06-reports.md) | Progress bar % hoàn thành | `feature/phase-06-reports` | 🔵 Hiện tại |
-| **7** | [Ajax & Validation](phases/phase-07-ajax-validation.md) | Cập nhật không reload, validate đầy đủ | `feature/phase-07-ajax` | ⚪ Tiếp theo |
-| **8** | [Drag-Drop Kanban](phases/phase-08-drag-drop.md) | SortableJS, reorder | `feature/phase-08-dragdrop` | ⚪ |
+| **6** | [Reports](phases/phase-06-reports.md) | Progress bar % hoàn thành | `feature/phase-06-reports` | 🟢 Hoàn thành |
+| **7** | [Ajax & Validation](phases/phase-07-ajax-validation.md) | Cập nhật không reload, validate đầy đủ | `feature/phase-07-ajax` | 🔵 Hiện tại |
+| **8** | [Drag-Drop Kanban](phases/phase-08-drag-drop.md) | SortableJS, reorder | `feature/phase-08-dragdrop` | ⚪ Tiếp theo |
 | **9** | [Polish & Extras](phases/phase-09-polish.md) | Filter, labels, activity log, dark mode | `feature/phase-09-polish` | ⚪ |
 | **10** | [Deploy](phases/phase-10-deploy.md) | IIS/AWS, HTTPS, CI cơ bản | `feature/phase-10-deploy` | ⚪ |
 

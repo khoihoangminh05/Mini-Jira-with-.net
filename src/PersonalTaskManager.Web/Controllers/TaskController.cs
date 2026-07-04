@@ -1,8 +1,10 @@
 using System.Linq;
 using System.Web.Mvc;
+using PersonalTaskManager.Core.Enums;
 using PersonalTaskManager.Core.Interfaces;
 using PersonalTaskManager.Infrastructure.Repositories;
 using PersonalTaskManager.Web.Helpers;
+using PersonalTaskManager.Web.Models.Kanban;
 using PersonalTaskManager.Web.Models.Task;
 
 namespace PersonalTaskManager.Web.Controllers
@@ -189,6 +191,44 @@ namespace PersonalTaskManager.Web.Controllers
 
             TempData["SuccessMessage"] = "Đã xóa task.";
             return RedirectToAction("Index", new { projectId });
+        }
+
+        /// <summary>Ajax — cập nhật trạng thái task (Phase 7).</summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult UpdateStatus(int id, int projectId, string action)
+        {
+            var userId = RequireUserId();
+            TaskStatus newStatus;
+            string message;
+
+            if (!TaskStatusTransition.TryApply(_taskRepository, id, userId, projectId, action, out newStatus, out message))
+            {
+                return Json(new { success = false, message });
+            }
+
+            return Json(new
+            {
+                success = true,
+                message,
+                taskId = id,
+                newStatus = (int)newStatus,
+                columnKey = TaskCardMapper.GetColumnKey(newStatus)
+            });
+        }
+
+        /// <summary>Partial card sau Ajax — refresh nút theo status mới.</summary>
+        [HttpGet]
+        public ActionResult Card(int id)
+        {
+            var userId = RequireUserId();
+            var task = _taskRepository.GetByIdForUser(id, userId);
+            if (task == null)
+            {
+                return HttpNotFound();
+            }
+
+            return PartialView("_TaskCard", TaskCardMapper.FromEntity(task));
         }
     }
 }

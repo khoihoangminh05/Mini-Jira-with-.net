@@ -10,7 +10,7 @@ namespace PersonalTaskManager.Web.Controllers
         public ActionResult Index()
         {
             ViewBag.Username = CurrentUsername;
-            ViewBag.Phase = "Phase 6 — Reports (MVP hoàn thành)";
+            ViewBag.Phase = "Phase 7 — Ajax & Validation";
             return View();
         }
 
