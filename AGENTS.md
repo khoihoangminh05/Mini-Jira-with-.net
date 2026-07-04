@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 5 — Kanban Basic** (3 cột, Start / Hoàn thành / Mở lại)
+**Phase 6 — Reports** (progress bar % hoàn thành theo project — **MVP mentor xong**)
 
-Sang Phase 6 khi checklist `docs/phases/phase-05-kanban-basic.md` hoàn tất.
+Sang Phase 7 khi checklist `docs/phases/phase-06-reports.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

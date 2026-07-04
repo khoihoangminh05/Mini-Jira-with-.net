@@ -1,0 +1,96 @@
+@model PersonalTaskManager.Web.Models.Report.ReportIndexViewModel
+@using PersonalTaskManager.Web.Helpers
+@{
+    ViewBag.Title = "Báo cáo tiến độ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var overallBarClass = ReportHelper.GetProgressBarClass(Model.OverallPercentComplete);
+    var overallSummary = ReportHelper.FormatSummaryText(Model.OverallDoneTasks, Model.OverallTotalTasks, Model.OverallPercentComplete);
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Báo cáo tiến độ</h1>
+        <p class="text-muted mb-0">Phần trăm task hoàn thành theo từng dự án</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Project")">← Dự án</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h2 class="h6 text-muted mb-2">Tổng quan tất cả dự án</h2>
+        <p class="mb-2 fw-semibold">@overallSummary</p>
+        <div class="progress mb-2" style="height: 1.25rem;">
+            <div class="progress-bar @overallBarClass"
+                 role="progressbar"
+                 style="width: @(Model.OverallPercentComplete)%"
+                 aria-valuenow="@Model.OverallPercentComplete"
+                 aria-valuemin="0"
+                 aria-valuemax="100">
+                @Model.OverallPercentComplete%
+            </div>
+        </div>
+        <small class="text-muted">
+            Cần làm + Đang làm + Hoàn thành = @Model.OverallTotalTasks task
+        </small>
+    </div>
+</div>
+
+@if (Model.Projects.Count == 0)
+{
+    <div class="hero text-center py-5">
+        <h2 class="h5 text-muted">Chưa có dự án</h2>
+        <p class="text-muted mb-4">Tạo dự án và task để xem báo cáo tiến độ.</p>
+        <a class="btn btn-primary" href="@Url.Action("Index", "Project")">Tới dự án</a>
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var project in Model.Projects)
+        {
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-2">
+                            <div>
+                                <h2 class="h5 mb-1">
+                                    <a href="@Url.Action("Index", "Kanban", new { projectId = project.ProjectId })" class="text-decoration-none">
+                                        @project.ProjectName
+                                    </a>
+                                </h2>
+                                <p class="text-muted small mb-0">@project.SummaryText</p>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <span class="badge bg-secondary">Cần làm: @project.ToDoTasks</span>
+                                <span class="badge bg-primary">Đang làm: @project.InProgressTasks</span>
+                                <span class="badge bg-success">Xong: @project.DoneTasks</span>
+                            </div>
+                        </div>
+
+                        <div class="progress" style="height: 1.25rem;">
+                            <div class="progress-bar @project.ProgressBarClass"
+                                 role="progressbar"
+                                 style="width: @(project.PercentComplete)%"
+                                 aria-valuenow="@project.PercentComplete"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100">
+                                @if (project.PercentComplete >= 15)
+                                {
+                                    @:@project.PercentComplete%
+                                }
+                            </div>
+                        </div>
+                        @if (project.PercentComplete < 15 && project.TotalTasks > 0)
+                        {
+                            <small class="text-muted">@project.PercentComplete%</small>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<p class="text-muted small mt-4 mb-0">
+    Số liệu đồng bộ với Kanban — refresh trang sau khi đổi trạng thái task.
+</p>
