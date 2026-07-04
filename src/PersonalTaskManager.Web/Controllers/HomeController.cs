@@ -1,18 +1,20 @@
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using PersonalTaskManager.Infrastructure.Data;
 
 namespace PersonalTaskManager.Web.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class HomeController : BaseController
     {
-        /// <summary>Trang chủ placeholder — Phase 1.</summary>
+        /// <summary>Dashboard sau đăng nhập.</summary>
         public ActionResult Index()
         {
-            ViewBag.Phase = "Phase 1 — Scaffold + Database";
+            ViewBag.Username = CurrentUsername;
+            ViewBag.Phase = "Phase 3 — Project CRUD";
             return View();
         }
 
-        /// <summary>Kiểm tra kết nối Oracle (tùy chọn khi đã cấu hình DB).</summary>
+        /// <summary>Kiểm tra kết nối Oracle.</summary>
         public ActionResult About()
         {
             string message;

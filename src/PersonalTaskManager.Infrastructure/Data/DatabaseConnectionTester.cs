@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace PersonalTaskManager.Infrastructure.Data
 {
@@ -11,9 +12,10 @@ namespace PersonalTaskManager.Infrastructure.Data
             {
                 using (var context = new ApplicationDbContext())
                 {
-                    // Mở connection để xác minh Oracle + connection string
+                    // Mở connection + thử query bảng USERS (bắt lỗi schema dbo, thiếu bảng, ...)
                     var connection = context.Database.Connection;
                     connection.Open();
+                    context.Users.Take(1).ToList();
                     connection.Close();
 
                     message = "Kết nối Oracle thành công.";

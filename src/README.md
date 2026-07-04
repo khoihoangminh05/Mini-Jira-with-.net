@@ -60,8 +60,26 @@ Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.e
 
 1. Mở **`src/PersonalTaskManager.sln`** (không mở thư mục gốc repo)
 2. Chuột phải **PersonalTaskManager.Web** → **Set as Startup Project**
-3. Nhấn **F5** (IIS Express — https://localhost:44301/)
-4. Trang chủ hiển thị → vào **DB Status** để kiểm tra kết nối Oracle
+3. Nhấn **F5** → trình duyệt mở `http://localhost:5050/`
+4. Trang Login hiển thị → đăng ký / đăng nhập
+
+### IIS Express "exited with code 0" ngay sau F5
+
+**Nguyên nhân thường gặp:** đường dẫn project có **khoảng trắng** (`love in .net`) + IIS Express nhận sai tham số `/path`.
+
+**Đã sửa:** F5 gọi `PersonalTaskManager.Web\iisexpress-run.ps1` (giống logic `run-web.ps1`).
+
+| Trường hợp | Ý nghĩa |
+|------------|---------|
+| Bấm **Stop** (Shift+F5) | Bình thường — code 0 = thoát sạch |
+| F5 thoát ngay | Rebuild → F5 lại; hoặc dùng `.\run-web.ps1` |
+
+**F5 trong VS** (attach trực tiếp `iisexpress.exe`, không qua PowerShell):
+1. Tắt mọi `iisexpress.exe` cũ (Task Manager)
+2. **Rebuild Solution**
+3. **F5** → Output hiện `Starting IIS Express...` → browser mở `http://localhost:5050/`
+
+Nếu F5 vẫn lỗi, chạy `PersonalTaskManager.Web\iisexpress-run.cmd` hoặc `.\run-web.ps1`.
 
 ## Visual Studio — lỗi "The application for the project is not installed"
 

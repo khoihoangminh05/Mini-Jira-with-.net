@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 1 — Scaffold + Database** (solution trong `src/`)
+**Phase 3 — Project CRUD** (Index, Create, Edit, Delete soft)
 
-Sang Phase 2 khi checklist `docs/phases/phase-01-scaffold-database.md` hoàn tất.
+Sang Phase 4 khi checklist `docs/phases/phase-03-project-crud.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

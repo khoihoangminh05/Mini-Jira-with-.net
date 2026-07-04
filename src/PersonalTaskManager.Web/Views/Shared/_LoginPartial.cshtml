@@ -1,0 +1,19 @@
+﻿@using System.Web.Mvc.Html
+
+<div class="d-flex align-items-center gap-2">
+@if (Request.IsAuthenticated)
+{
+    <span class="navbar-text text-white-50 d-none d-md-inline">Xin chào, <strong class="text-white">@User.Identity.Name</strong></span>
+    <a class="nav-link" href="@Url.Action("Index", "Project")">Dự án</a>
+    using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { @class = "d-inline" }))
+    {
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-outline-light btn-sm">Đăng xuất</button>
+    }
+}
+else
+{
+    <a class="nav-link" href="@Url.Action("Login", "Account")">Đăng nhập</a>
+    <a class="nav-link" href="@Url.Action("Register", "Account")">Đăng ký</a>
+}
+</div>
