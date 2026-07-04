@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 4 — Task CRUD** (Index, Create, Edit, Delete trong từng project)
+**Phase 5 — Kanban Basic** (3 cột, Start / Hoàn thành / Mở lại)
 
-Sang Phase 5 khi checklist `docs/phases/phase-04-task-crud.md` hoàn tất.
+Sang Phase 6 khi checklist `docs/phases/phase-05-kanban-basic.md` hoàn tất.
 
 ## Liên hệ tài liệu
 
