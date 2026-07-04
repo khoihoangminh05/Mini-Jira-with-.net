@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 3 — Project CRUD** (Index, Create, Edit, Delete soft)
+**Phase 4 — Task CRUD** (Index, Create, Edit, Delete trong từng project)
 
-Sang Phase 4 khi checklist `docs/phases/phase-03-project-crud.md` hoàn tất.
+Sang Phase 5 khi checklist `docs/phases/phase-04-task-crud.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

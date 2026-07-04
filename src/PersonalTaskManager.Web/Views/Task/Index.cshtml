@@ -1,0 +1,127 @@
+@model PersonalTaskManager.Web.Models.Task.TaskListViewModel
+@using PersonalTaskManager.Web.Helpers
+@{
+    ViewBag.Title = "Task — " + Model.ProjectName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index", "Project")">Dự án</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.ProjectName</li>
+    </ol>
+</nav>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">@Model.ProjectName</h1>
+        <p class="text-muted mb-0">Danh sách task</p>
+    </div>
+    <a class="btn btn-primary" href="@Url.Action("Create", new { projectId = Model.ProjectId })">
+        + Tạo task
+    </a>
+</div>
+
+@if (Model.Tasks.Count == 0)
+{
+    <div class="hero text-center py-5">
+        <h2 class="h5 text-muted">Chưa có task nào</h2>
+        <p class="text-muted mb-4">Thêm task đầu tiên cho dự án này.</p>
+        <a class="btn btn-primary" href="@Url.Action("Create", new { projectId = Model.ProjectId })">Tạo task</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive card shadow-sm">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Tiêu đề</th>
+                    <th>Ưu tiên</th>
+                    <th>Trạng thái</th>
+                    <th>Hạn chót</th>
+                    <th>Tạo lúc</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var task in Model.Tasks)
+                {
+                    <tr>
+                        <td>
+                            <strong>@task.Title</strong>
+                            @if (!string.IsNullOrWhiteSpace(task.Description))
+                            {
+                                <div class="text-muted small text-truncate" style="max-width: 280px;">@task.Description</div>
+                            }
+                        </td>
+                        <td>
+                            <span class="badge @TaskEnumHelper.GetPriorityBadgeClass(task.Priority)">@task.PriorityLabel</span>
+                        </td>
+                        <td>
+                            <span class="badge @TaskEnumHelper.GetStatusBadgeClass(task.Status)">@task.StatusLabel</span>
+                        </td>
+                        <td>
+                            @if (task.Deadline.HasValue)
+                            {
+                                @task.Deadline.Value.ToString("dd/MM/yyyy")
+                            }
+                            else
+                            {
+                                <span class="text-muted">—</span>
+                            }
+                        </td>
+                        <td class="text-muted small">@task.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-outline-primary btn-sm" href="@Url.Action("Edit", new { id = task.TaskId })">Sửa</a>
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal"
+                                    data-task-id="@task.TaskId"
+                                    data-task-title="@task.Title">
+                                Xóa
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xác nhận xóa task</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa task <strong id="deleteTaskTitle"></strong>?
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginForm("Delete", "Task", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" id="deleteTaskId" value="" />
+                    <input type="hidden" name="projectId" value="@Model.ProjectId" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-danger">Xóa</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<a class="btn btn-outline-secondary mt-4" href="@Url.Action("Index", "Project")">← Quay lại dự án</a>
+
+@section scripts {
+    <script>
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            document.getElementById('deleteTaskId').value = button.getAttribute('data-task-id');
+            document.getElementById('deleteTaskTitle').textContent = button.getAttribute('data-task-title');
+        });
+    </script>
+}
