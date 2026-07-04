@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Giới thiệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var connected = ViewBag.DatabaseConnected as bool? ?? false;
+    var dbMessage = ViewBag.DatabaseMessage as string ?? "";
+}
+
+<h2>Kiểm tra kết nối Oracle</h2>
+
+@if (connected)
+{
+    <div class="alert alert-success" role="alert">
+        <strong>OK:</strong> @dbMessage
+    </div>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        <strong>Chưa kết nối:</strong> @dbMessage
+    </div>
+    <p class="text-muted">
+        Cập nhật <code>connectionStrings</code> trong <code>Web.config</code>,
+        chạy script <code>database/scripts/001_create_tables.sql</code> trên Oracle,
+        rồi tải lại trang này.
+    </p>
+}
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">← Về trang chủ</a>

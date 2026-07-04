@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="hero text-center py-5">
+    <h1 class="display-5 fw-bold">Xin chào, @ViewBag.Username!</h1>
+    <p class="lead text-muted">Personal Task Manager — @ViewBag.Phase</p>
+    <hr class="my-4" />
+    <p>Bạn đã đăng nhập thành công. Tiếp theo: quản lý dự án và task.</p>
+    <a class="btn btn-primary btn-lg me-2" href="@Url.Action("Index", "Project")">Xem dự án</a>
+    <a class="btn btn-outline-secondary btn-lg" href="@Url.Action("About", "Home")">Kiểm tra DB</a>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Dự án</h5>
+                <p class="card-text">Tạo và quản lý dự án cá nhân — đã sẵn sàng.</p>
+                <a class="btn btn-sm btn-primary" href="@Url.Action("Index", "Project")">Mở dự án</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Task / Kanban</h5>
+                <p class="card-text">Công việc theo cột trạng thái — Phase 4–5.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Báo cáo</h5>
+                <p class="card-text">Tiến độ hoàn thành — Phase 6.</p>
+            </div>
+        </div>
+    </div>
+</div>

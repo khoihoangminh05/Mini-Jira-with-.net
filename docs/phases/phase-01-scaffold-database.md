@@ -1,8 +1,6 @@
 # Phase 1 — Scaffold + Database
 
-**Branch:** `feature/phase-01-scaffold`  
-**Phụ thuộc:** Phase 0  
-**Ước lượng:** 4–5 ngày
+**Trạng thái:** 🟢 Hoàn thành
 
 ---
 

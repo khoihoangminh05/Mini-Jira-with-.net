@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 0 — Foundation** (docs + rules + skills)
+**Phase 3 — Project CRUD** (Index, Create, Edit, Delete soft)
 
-Sang Phase 1 khi checklist `docs/phases/phase-00-foundation.md` hoàn tất.
+Sang Phase 4 khi checklist `docs/phases/phase-03-project-crud.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

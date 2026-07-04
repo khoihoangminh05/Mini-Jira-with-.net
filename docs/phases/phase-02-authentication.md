@@ -1,8 +1,6 @@
 # Phase 2 — Authentication & Layout
 
-**Branch:** `feature/phase-02-auth`  
-**Phụ thuộc:** Phase 1  
-**Ước lượng:** 4–5 ngày
+**Trạng thái:** 🟡 Chờ test & PR
 
 ---
 

@@ -1,5 +1,24 @@
 # Database Scripts
 
+## Chạy setup nhanh (Oracle 26ai Free local)
+
+```powershell
+cd database\scripts
+$env:ORACLE_HOME = "C:\app\ADMIN\product\26ai\dbhomeFree"
+& "$env:ORACLE_HOME\bin\sqlplus.exe" "/ as sysdba" "@run_setup.sql"
+```
+
+**Connection string app** (Oracle Free trên Windows thường dùng):
+
+```
+User Id=APP_USER;Password=***;Data Source=localhost:1522/freepdb1;
+```
+
+| Tham số | Giá trị máy bạn |
+|---------|-----------------|
+| Port | **1522** (không phải 1521) |
+| PDB | **freepdb1** (không phải XEPDB1) |
+
 ## Thư mục
 
 | Path | Nội dung |
