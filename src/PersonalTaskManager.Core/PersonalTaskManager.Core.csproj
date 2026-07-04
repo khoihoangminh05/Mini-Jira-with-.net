@@ -41,6 +41,7 @@
     <Compile Include="Entities\WorkTask.cs" />
     <Compile Include="Enums\TaskPriority.cs" />
     <Compile Include="Enums\TaskStatus.cs" />
+    <Compile Include="Interfaces\ITaskRepository.cs" />
     <Compile Include="Interfaces\IProjectRepository.cs" />
     <Compile Include="Interfaces\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
