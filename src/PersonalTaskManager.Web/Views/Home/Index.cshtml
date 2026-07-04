@@ -1,0 +1,39 @@
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="hero text-center py-5">
+    <h1 class="display-5 fw-bold">Personal Task Manager</h1>
+    <p class="lead text-muted">Mini Jira/Trello — @ViewBag.Phase</p>
+    <hr class="my-4" />
+    <p>Solution MVC 4.8 + EF6 + Oracle đã sẵn sàng. Tiếp theo: Phase 2 — Authentication.</p>
+    <a class="btn btn-primary btn-lg" href="@Url.Action("About", "Home")">Kiểm tra kết nối DB</a>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">MVC</h5>
+                <p class="card-text">Controllers, Razor Views, Routing</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Entity Framework 6</h5>
+                <p class="card-text">Code First, LINQ, Oracle provider</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Kanban (sắp tới)</h5>
+                <p class="card-text">To Do → In Progress → Done</p>
+            </div>
+        </div>
+    </div>
+</div>

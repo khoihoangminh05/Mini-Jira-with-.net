@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 0 — Foundation** (docs + rules + skills)
+**Phase 1 — Scaffold + Database** (solution trong `src/`)
 
-Sang Phase 1 khi checklist `docs/phases/phase-00-foundation.md` hoàn tất.
+Sang Phase 2 khi checklist `docs/phases/phase-01-scaffold-database.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

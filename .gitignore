@@ -18,6 +18,8 @@ x86/
 
 # NuGet
 packages/
+src/packages/
+src/nuget.exe
 *.nupkg
 *.snupkg
 project.lock.json
@@ -65,3 +67,7 @@ connectionstrings.local.config
 
 # Oracle local
 tnsnames.ora
+
+# VS diagnostics
+vs-activitylog.xml
+src/vs-activitylog.xml

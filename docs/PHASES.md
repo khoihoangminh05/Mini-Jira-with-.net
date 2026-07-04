@@ -28,9 +28,9 @@ gantt
 
 | Phase | Tên | Mục tiêu | Branch gợi ý | Trạng thái |
 |-------|-----|----------|--------------|------------|
-| **0** | [Foundation](phases/phase-00-foundation.md) | Docs, rules, skills, khung repo | `chore/phase-00-foundation` | 🔵 Hiện tại |
-| **1** | [Scaffold + Database](phases/phase-01-scaffold-database.md) | Solution MVC, EF, schema Oracle | `feature/phase-01-scaffold` | ⚪ Chưa bắt đầu |
-| **2** | [Authentication](phases/phase-02-authentication.md) | Login, Register, Logout, Layout | `feature/phase-02-auth` | ⚪ |
+| **0** | [Foundation](phases/phase-00-foundation.md) | Docs, rules, skills, khung repo | `chore/phase-00-foundation` | 🟢 Hoàn thành |
+| **1** | [Scaffold + Database](phases/phase-01-scaffold-database.md) | Solution MVC, EF, schema Oracle | `feature/phase-01-scaffold` | 🟢 Hoàn thành |
+| **2** | [Authentication](phases/phase-02-authentication.md) | Login, Register, Logout, Layout | `feature/phase-02-auth` | 🔵 Tiếp theo |
 | **3** | [Project CRUD](phases/phase-03-project-crud.md) | CRUD dự án, phân quyền theo user | `feature/phase-03-project` | ⚪ |
 | **4** | [Task CRUD](phases/phase-04-task-crud.md) | CRUD task, enum priority/status | `feature/phase-04-task` | ⚪ |
 | **5** | [Kanban Basic](phases/phase-05-kanban-basic.md) | 3 cột, nút Start/Done | `feature/phase-05-kanban` | ⚪ |
@@ -116,5 +116,5 @@ Dùng checklist **trong file phase tương ứng**. Dưới đây là tiêu chí
 
 Khi hoàn thành một phase, sửa cột **Trạng thái** trong bảng trên và ghi ngày hoàn thành vào file phase tương ứng.
 
-**Phase hiện tại:** Phase 0 — Foundation  
+**Phase hiện tại:** Phase 2 — Authentication  
 **Cập nhật lần cuối:** 2026-07-03

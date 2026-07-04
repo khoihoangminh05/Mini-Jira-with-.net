@@ -1,0 +1,14 @@
+body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.hero {
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card {
+    border: none;
+}

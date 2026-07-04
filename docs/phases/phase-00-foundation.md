@@ -1,7 +1,7 @@
 # Phase 0 — Foundation (Nền tảng dự án)
 
 **Branch:** `chore/phase-00-foundation`  
-**Trạng thái:** 🔵 Đang thực hiện  
+**Trạng thái:** 🟢 Hoàn thành (docs + khung repo)  
 **Phụ thuộc:** Không  
 **Ước lượng:** 2–3 ngày
 
