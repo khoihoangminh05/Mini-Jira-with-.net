@@ -72,9 +72,9 @@ database/procedures/
 
 ## Phase hiện tại
 
-**Phase 8 — Drag-Drop Kanban** (SortableJS + Move API + Oracle SP script)
+**Phase 9 — Polish** (Dashboard, Kanban filter, Activity log, Dark mode)
 
-Sang Phase 9 khi checklist `docs/phases/phase-08-drag-drop.md` hoàn tất.
+Sang Phase 10 khi checklist `docs/phases/phase-09-polish.md` hoàn tất.
 
 ## Liên hệ tài liệu
 

@@ -50,5 +50,53 @@ namespace PersonalTaskManager.Infrastructure.Repositories
                 return summaries;
             }
         }
+
+        public DashboardSummary GetDashboardSummary(int userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var today = DateTime.Today;
+                var projects = context.Projects
+                    .Where(p => p.UserId == userId && !p.IsDeleted)
+                    .OrderByDescending(p => p.CreatedAt)
+                    .ToList();
+
+                var projectIds = projects.Select(p => p.ProjectId).ToList();
+                var tasks = context.Tasks
+                    .Where(t => projectIds.Contains(t.ProjectId) && !t.IsDeleted)
+                    .ToList();
+
+                var summary = new DashboardSummary
+                {
+                    ProjectCount = projects.Count,
+                    TotalTasks = tasks.Count,
+                    DoneTasks = tasks.Count(t => t.Status == TaskStatus.Done),
+                    InProgressTasks = tasks.Count(t => t.Status == TaskStatus.InProgress),
+                    ToDoTasks = tasks.Count(t => t.Status == TaskStatus.ToDo),
+                    OverdueTasks = tasks.Count(t =>
+                        t.Deadline.HasValue
+                        && t.Deadline.Value.Date < today
+                        && t.Status != TaskStatus.Done)
+                };
+
+                foreach (var project in projects)
+                {
+                    var projectTasks = tasks.Where(t => t.ProjectId == project.ProjectId).ToList();
+                    summary.Projects.Add(new ProjectQuickLink
+                    {
+                        ProjectId = project.ProjectId,
+                        ProjectName = project.Name,
+                        TotalTasks = projectTasks.Count,
+                        DoneTasks = projectTasks.Count(t => t.Status == TaskStatus.Done),
+                        OverdueTasks = projectTasks.Count(t =>
+                            t.Deadline.HasValue
+                            && t.Deadline.Value.Date < today
+                            && t.Status != TaskStatus.Done)
+                    });
+                }
+
+                return summary;
+            }
+        }
     }
 }

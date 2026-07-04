@@ -22,6 +22,8 @@ namespace PersonalTaskManager.Infrastructure.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<WorkTask> Tasks { get; set; }
 
+        public DbSet<ActivityLog> ActivityLogs { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(OracleSchema);
@@ -30,6 +32,7 @@ namespace PersonalTaskManager.Infrastructure.Data
             ConfigureUser(modelBuilder);
             ConfigureProject(modelBuilder);
             ConfigureWorkTask(modelBuilder);
+            ConfigureActivityLog(modelBuilder);
         }
 
         private static void ConfigureUser(DbModelBuilder modelBuilder)
@@ -88,6 +91,22 @@ namespace PersonalTaskManager.Infrastructure.Data
                 .WithMany(p => p.Tasks)
                 .HasForeignKey(t => t.ProjectId)
                 .WillCascadeOnDelete(false);
+        }
+
+        private static void ConfigureActivityLog(DbModelBuilder modelBuilder)
+        {
+            var entity = modelBuilder.Entity<ActivityLog>();
+            entity.ToTable("ACTIVITY_LOG", OracleSchema);
+            entity.HasKey(a => a.LogId);
+            entity.Property(a => a.LogId)
+                .HasColumnName("LOG_ID")
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            entity.Property(a => a.UserId).HasColumnName("USER_ID");
+            entity.Property(a => a.ProjectId).HasColumnName("PROJECT_ID");
+            entity.Property(a => a.TaskId).HasColumnName("TASK_ID");
+            entity.Property(a => a.ActionType).HasColumnName("ACTION_TYPE").IsRequired().HasMaxLength(50);
+            entity.Property(a => a.Message).HasColumnName("MESSAGE").IsRequired().HasMaxLength(500);
+            entity.Property(a => a.CreatedAt).HasColumnName("CREATED_AT");
         }
     }
 }

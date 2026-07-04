@@ -24,6 +24,7 @@ User Id=APP_USER;Password=***;Data Source=localhost:1522/freepdb1;
 | Path | Nội dung |
 |------|----------|
 | `scripts/` | DDL, sequences, indexes, seed data |
+| `scripts/002_create_activity_log.sql` | Bảng ACTIVITY_LOG — **Phase 9** (chạy sau 001) |
 | `procedures/` | Oracle packages & SP — `001_pkg_task_move.sql` (Phase 8) |
 
 ## Quy ước đặt tên file

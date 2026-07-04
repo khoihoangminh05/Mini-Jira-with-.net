@@ -6,5 +6,7 @@ namespace PersonalTaskManager.Core.Interfaces
     public interface IReportRepository
     {
         IList<ProjectProgressSummary> GetProjectProgressByUserId(int userId);
+
+        DashboardSummary GetDashboardSummary(int userId);
     }
 }

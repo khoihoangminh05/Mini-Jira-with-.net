@@ -3,7 +3,9 @@
 
 <div class="card kanban-card shadow-sm mb-3 @(Model.IsOverdue ? "border-danger" : "")"
      data-task-id="@Model.TaskId"
-     data-status="@((int)Model.Status)">
+     data-status="@((int)Model.Status)"
+     data-priority="@((int)Model.Priority)"
+     data-overdue="@(Model.IsOverdue.ToString().ToLowerInvariant())">
     <div class="card-body p-3">
         <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
             <div class="d-flex align-items-start gap-2 flex-grow-1">

@@ -31,16 +31,61 @@
 
     function updateColumnCounts() {
         $('.kanban-column').each(function () {
-            var count = $(this).find('.kanban-column-body .kanban-card').length;
+            var count = $(this).find('.kanban-column-body .kanban-card:not(.kanban-card-hidden)').length;
             $(this).find('.kanban-column-count').text(count);
-            var $empty = $(this).find('.kanban-empty-msg');
-            if (count === 0) {
+            var $body = $(this).find('.kanban-column-body');
+            var $empty = $body.find('.kanban-empty-msg');
+            var hasVisible = count > 0;
+            if (!hasVisible) {
                 if ($empty.length === 0) {
-                    $(this).find('.kanban-column-body').append('<p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>');
+                    $body.append('<p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>');
                 }
             } else {
                 $empty.remove();
             }
+        });
+    }
+
+    function prependActivityLog(entry) {
+        if (!entry || !entry.message) {
+            return;
+        }
+        var $tl = $('#activityTimeline');
+        if (!$tl.length) {
+            return;
+        }
+        $tl.find('.activity-empty-msg').remove();
+        var msg = $('<div>').text(entry.message).html();
+        var time = entry.timeLabel || '';
+        var html = '<li class="list-group-item activity-item">'
+            + '<div class="d-flex justify-content-between gap-2">'
+            + '<span class="activity-message">' + msg + '</span>'
+            + '<time class="text-muted small text-nowrap activity-time">' + time + '</time>'
+            + '</div></li>';
+        $tl.prepend(html);
+    }
+
+    function applyKanbanFilter() {
+        var priority = $('#kanbanFilterPriority').val();
+        var overdueOnly = $('#kanbanFilterOverdue').is(':checked');
+
+        $('.kanban-card').each(function () {
+            var $card = $(this);
+            var cardPriority = String($card.data('priority'));
+            var isOverdue = $card.data('overdue') === true || $card.data('overdue') === 'true';
+            var matchPriority = !priority || cardPriority === priority;
+            var matchOverdue = !overdueOnly || isOverdue;
+            $card.toggleClass('kanban-card-hidden', !(matchPriority && matchOverdue));
+        });
+        updateColumnCounts();
+    }
+
+    function bindKanbanFilter() {
+        $('#kanbanFilterPriority, #kanbanFilterOverdue').on('change', applyKanbanFilter);
+        $('#kanbanFilterClear').on('click', function () {
+            $('#kanbanFilterPriority').val('');
+            $('#kanbanFilterOverdue').prop('checked', false);
+            applyKanbanFilter();
         });
     }
 
@@ -100,6 +145,9 @@
                     updateColumnCounts();
                     refreshCard($card, taskId);
                     showToast(res.message, 'success');
+                    if (res.activityLog) {
+                        prependActivityLog(res.activityLog);
+                    }
                 } else {
                     revertDrag(evt);
                     showToast((res && res.message) || 'Di chuyển thất bại.', 'danger');
@@ -154,6 +202,9 @@
                         updateColumnCounts();
                         refreshCard($card, taskId);
                         showToast(res.message, 'success');
+                        if (res.activityLog) {
+                            prependActivityLog(res.activityLog);
+                        }
                     } else {
                         showToast((res && res.message) || 'Cập nhật thất bại.', 'danger');
                     }
@@ -227,6 +278,7 @@
     $(function () {
         if ($('.kanban-board').length) {
             bindKanbanAjax();
+            bindKanbanFilter();
             initSortable();
         }
     });

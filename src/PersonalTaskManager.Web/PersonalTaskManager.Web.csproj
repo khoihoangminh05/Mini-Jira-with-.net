@@ -72,6 +72,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Content\**\*" />
     <Content Include="Scripts\kanban.js" />
+    <Content Include="Scripts\site.js" />
     <Content Include="Views\**\*.cshtml" />
   </ItemGroup>
 
@@ -86,10 +87,14 @@
     <Compile Include="Controllers\KanbanController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Helpers\ActivityLogger.cs" />
+    <Compile Include="Helpers\ActivityLogMapper.cs" />
     <Compile Include="Helpers\ReportHelper.cs" />
     <Compile Include="Helpers\TaskCardMapper.cs" />
     <Compile Include="Helpers\TaskEnumHelper.cs" />
     <Compile Include="Helpers\TaskStatusTransition.cs" />
+    <Compile Include="Models\Activity\ActivityLogItemViewModel.cs" />
+    <Compile Include="Models\Home\DashboardViewModel.cs" />
     <Compile Include="Models\Report\ReportIndexViewModel.cs" />
     <Compile Include="Models\Kanban\KanbanViewModel.cs" />
     <Compile Include="Models\Task\TaskFormViewModel.cs" />

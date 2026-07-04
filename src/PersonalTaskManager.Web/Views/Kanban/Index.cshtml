@@ -12,14 +12,39 @@
     </ol>
 </nav>
 
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <div>
         <h1 class="h3 mb-1">@Model.ProjectName</h1>
-        <p class="text-muted mb-0">Kéo thả giữa các cột (To Do → Done được phép) hoặc dùng nút bên dưới mỗi card</p>
+        <p class="text-muted mb-0">Kéo thả giữa các cột hoặc dùng nút trên mỗi card</p>
     </div>
     <div class="d-flex flex-wrap gap-2">
         <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Task", new { projectId = Model.ProjectId })">Danh sách</a>
         <a class="btn btn-primary" href="@Url.Action("Create", "Task", new { projectId = Model.ProjectId })">+ Tạo task</a>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-3 kanban-filter-bar">
+    <div class="card-body py-2">
+        <div class="row g-2 align-items-end">
+            <div class="col-sm-4 col-md-3">
+                <label class="form-label small mb-1" for="kanbanFilterPriority">Ưu tiên</label>
+                <select class="form-select form-select-sm" id="kanbanFilterPriority" aria-label="Lọc theo ưu tiên">
+                    <option value="">Tất cả</option>
+                    <option value="3">High</option>
+                    <option value="2">Medium</option>
+                    <option value="1">Low</option>
+                </select>
+            </div>
+            <div class="col-sm-4 col-md-3">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" id="kanbanFilterOverdue" />
+                    <label class="form-check-label small" for="kanbanFilterOverdue">Chỉ quá hạn</label>
+                </div>
+            </div>
+            <div class="col-sm-4 col-md-3">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="kanbanFilterClear">Xóa bộ lọc</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -28,67 +53,81 @@
     @Html.AntiForgeryToken()
 }
 
-<div class="row g-3 kanban-board" data-project-id="@Model.ProjectId">
-    <div class="col-lg-4">
-        <div class="kanban-column kanban-column-todo h-100">
-            <div class="kanban-column-header">
-                <h2 class="h6 mb-0">Cần làm</h2>
-                <span class="badge bg-secondary kanban-column-count">@Model.ToDo.Count</span>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="row g-3 kanban-board" data-project-id="@Model.ProjectId">
+            <div class="col-md-4">
+                <div class="kanban-column kanban-column-todo h-100">
+                    <div class="kanban-column-header">
+                        <h2 class="h6 mb-0">Cần làm</h2>
+                        <span class="badge bg-secondary kanban-column-count">@Model.ToDo.Count</span>
+                    </div>
+                    <div class="kanban-column-body" data-column="todo">
+                        @if (Model.ToDo.Count == 0)
+                        {
+                            <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
+                        }
+                        else
+                        {
+                            foreach (var task in Model.ToDo)
+                            {
+                                @Html.Partial("_TaskCard", task)
+                            }
+                        }
+                    </div>
+                </div>
             </div>
-            <div class="kanban-column-body" data-column="todo">
-                @if (Model.ToDo.Count == 0)
-                {
-                    <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
-                }
-                else
-                {
-                    foreach (var task in Model.ToDo)
-                    {
-                        @Html.Partial("_TaskCard", task)
-                    }
-                }
+            <div class="col-md-4">
+                <div class="kanban-column kanban-column-progress h-100">
+                    <div class="kanban-column-header">
+                        <h2 class="h6 mb-0">Đang làm</h2>
+                        <span class="badge bg-primary kanban-column-count">@Model.InProgress.Count</span>
+                    </div>
+                    <div class="kanban-column-body" data-column="inprogress">
+                        @if (Model.InProgress.Count == 0)
+                        {
+                            <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
+                        }
+                        else
+                        {
+                            foreach (var task in Model.InProgress)
+                            {
+                                @Html.Partial("_TaskCard", task)
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="kanban-column kanban-column-done h-100">
+                    <div class="kanban-column-header">
+                        <h2 class="h6 mb-0">Hoàn thành</h2>
+                        <span class="badge bg-success kanban-column-count">@Model.Done.Count</span>
+                    </div>
+                    <div class="kanban-column-body" data-column="done">
+                        @if (Model.Done.Count == 0)
+                        {
+                            <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
+                        }
+                        else
+                        {
+                            foreach (var task in Model.Done)
+                            {
+                                @Html.Partial("_TaskCard", task)
+                            }
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="kanban-column kanban-column-progress h-100">
-            <div class="kanban-column-header">
-                <h2 class="h6 mb-0">Đang làm</h2>
-                <span class="badge bg-primary kanban-column-count">@Model.InProgress.Count</span>
+        <div class="card shadow-sm">
+            <div class="card-header bg-transparent">
+                <h2 class="h6 mb-0">Nhật ký hoạt động</h2>
             </div>
-            <div class="kanban-column-body" data-column="inprogress">
-                @if (Model.InProgress.Count == 0)
-                {
-                    <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
-                }
-                else
-                {
-                    foreach (var task in Model.InProgress)
-                    {
-                        @Html.Partial("_TaskCard", task)
-                    }
-                }
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="kanban-column kanban-column-done h-100">
-            <div class="kanban-column-header">
-                <h2 class="h6 mb-0">Hoàn thành</h2>
-                <span class="badge bg-success kanban-column-count">@Model.Done.Count</span>
-            </div>
-            <div class="kanban-column-body" data-column="done">
-                @if (Model.Done.Count == 0)
-                {
-                    <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
-                }
-                else
-                {
-                    foreach (var task in Model.Done)
-                    {
-                        @Html.Partial("_TaskCard", task)
-                    }
-                }
+            <div class="card-body p-0">
+                @Html.Partial("_ActivityTimeline", Model.ActivityLogs)
             </div>
         </div>
     </div>

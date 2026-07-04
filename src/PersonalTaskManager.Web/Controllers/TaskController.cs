@@ -104,6 +104,13 @@ namespace PersonalTaskManager.Web.Controllers
                 return HttpNotFound();
             }
 
+            ActivityLogger.TryLog(
+                userId,
+                model.ProjectId,
+                task.TaskId,
+                "TaskCreated",
+                string.Format("Tạo task \"{0}\"", task.Title));
+
             TempData["SuccessMessage"] = "Đã tạo task mới.";
             return RedirectToAction("Index", new { projectId = model.ProjectId });
         }
@@ -207,13 +214,20 @@ namespace PersonalTaskManager.Web.Controllers
                 return Json(new { success = false, message });
             }
 
+            var task = _taskRepository.GetByIdForUser(id, userId);
+            var logMessage = task != null
+                ? string.Format("Task \"{0}\": {1}", task.Title, message)
+                : message;
+            ActivityLogger.TryLog(userId, projectId, id, "StatusChange", logMessage);
+
             return Json(new
             {
                 success = true,
                 message,
                 taskId = id,
                 newStatus = (int)newStatus,
-                columnKey = TaskCardMapper.GetColumnKey(newStatus)
+                columnKey = TaskCardMapper.GetColumnKey(newStatus),
+                activityLog = new { message = logMessage, timeLabel = System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") }
             });
         }
 
@@ -249,13 +263,21 @@ namespace PersonalTaskManager.Web.Controllers
                 return Json(new { success = false, message = "Không thể di chuyển task." });
             }
 
+            var task = _taskRepository.GetByIdForUser(taskId, userId);
+            var statusLabel = TaskEnumHelper.GetStatusLabel(status);
+            var logMessage = task != null
+                ? string.Format("Kéo task \"{0}\" → {1}", task.Title, statusLabel)
+                : string.Format("Di chuyển task → {0}", statusLabel);
+            ActivityLogger.TryLog(userId, projectId, taskId, "TaskMoved", logMessage);
+
             return Json(new
             {
                 success = true,
                 message = "Đã cập nhật vị trí task.",
                 taskId,
                 newStatus,
-                columnKey = TaskCardMapper.GetColumnKey(status)
+                columnKey = TaskCardMapper.GetColumnKey(status),
+                activityLog = new { message = logMessage, timeLabel = System.DateTime.Now.ToString("dd/MM/yyyy HH:mm") }
             });
         }
     }

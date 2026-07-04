@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Data\ApplicationDbContext.cs" />
     <Compile Include="Data\DatabaseConnectionTester.cs" />
+    <Compile Include="Repositories\ActivityLogRepository.cs" />
     <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
