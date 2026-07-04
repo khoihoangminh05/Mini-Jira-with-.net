@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Web.Mvc;
 using PersonalTaskManager.Core.Enums;
@@ -31,7 +30,7 @@ namespace PersonalTaskManager.Web.Controllers
             }
 
             var tasks = _taskRepository.GetActiveByProjectId(projectId, userId);
-            var cards = tasks.Select(MapToCard).ToList();
+            var cards = tasks.Select(TaskCardMapper.FromEntity).ToList();
 
             var model = new KanbanViewModel
             {
@@ -45,85 +44,41 @@ namespace PersonalTaskManager.Web.Controllers
             return View(model);
         }
 
+        /// <summary>Fallback khi tắt JavaScript — POST form thông thường.</summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Start(int id, int projectId)
         {
-            return ChangeStatus(id, projectId, TaskStatus.ToDo, TaskStatus.InProgress, "Đã chuyển task sang Đang làm.");
+            return ChangeStatus(id, projectId, "start");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Complete(int id, int projectId)
         {
-            return ChangeStatus(id, projectId, TaskStatus.InProgress, TaskStatus.Done, "Đã hoàn thành task.");
+            return ChangeStatus(id, projectId, "complete");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Reopen(int id, int projectId)
         {
-            var userId = RequireUserId();
-            var task = _taskRepository.GetByIdForUser(id, userId);
-            if (task == null || task.ProjectId != projectId)
-            {
-                return HttpNotFound();
-            }
-
-            // Reopen từ Done hoặc InProgress về To Do
-            if (task.Status != TaskStatus.Done && task.Status != TaskStatus.InProgress)
-            {
-                return HttpNotFound();
-            }
-
-            if (!_taskRepository.UpdateStatus(id, userId, TaskStatus.ToDo))
-            {
-                return HttpNotFound();
-            }
-
-            TempData["SuccessMessage"] = "Đã mở lại task.";
-            return RedirectToAction("Index", new { projectId });
+            return ChangeStatus(id, projectId, "reopen");
         }
 
-        private ActionResult ChangeStatus(
-            int id,
-            int projectId,
-            TaskStatus requiredCurrent,
-            TaskStatus newStatus,
-            string successMessage)
+        private ActionResult ChangeStatus(int id, int projectId, string action)
         {
             var userId = RequireUserId();
-            var task = _taskRepository.GetByIdForUser(id, userId);
-            if (task == null || task.ProjectId != projectId || task.Status != requiredCurrent)
+            TaskStatus newStatus;
+            string message;
+
+            if (!TaskStatusTransition.TryApply(_taskRepository, id, userId, projectId, action, out newStatus, out message))
             {
                 return HttpNotFound();
             }
 
-            if (!_taskRepository.UpdateStatus(id, userId, newStatus))
-            {
-                return HttpNotFound();
-            }
-
-            TempData["SuccessMessage"] = successMessage;
+            TempData["SuccessMessage"] = message;
             return RedirectToAction("Index", new { projectId });
-        }
-
-        private static KanbanTaskCardViewModel MapToCard(Core.Entities.WorkTask task)
-        {
-            var today = DateTime.Today;
-            return new KanbanTaskCardViewModel
-            {
-                TaskId = task.TaskId,
-                ProjectId = task.ProjectId,
-                Title = task.Title,
-                Priority = task.Priority,
-                PriorityLabel = TaskEnumHelper.GetPriorityLabel(task.Priority),
-                Status = task.Status,
-                Deadline = task.Deadline,
-                IsOverdue = task.Deadline.HasValue
-                    && task.Deadline.Value.Date < today
-                    && task.Status != TaskStatus.Done
-            };
         }
     }
 }

@@ -97,6 +97,30 @@ namespace PersonalTaskManager.Web.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public JsonResult IsUsernameAvailable(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(!_userRepository.UsernameExists(username.Trim()), JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public JsonResult IsEmailAvailable(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(!_userRepository.EmailExists(email.Trim()), JsonRequestBehavior.AllowGet);
+        }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

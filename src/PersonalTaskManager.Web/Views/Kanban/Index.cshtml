@@ -15,7 +15,7 @@
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
     <div>
         <h1 class="h3 mb-1">@Model.ProjectName</h1>
-        <p class="text-muted mb-0">Bảng Kanban — kéo thả sẽ có ở Phase 8</p>
+        <p class="text-muted mb-0">Bảng Kanban — cập nhật Ajax không reload (Phase 7)</p>
     </div>
     <div class="d-flex flex-wrap gap-2">
         <a class="btn btn-outline-secondary" href="@Url.Action("Index", "Task", new { projectId = Model.ProjectId })">Danh sách</a>
@@ -23,17 +23,22 @@
     </div>
 </div>
 
-<div class="row g-3 kanban-board">
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "kanbanAntiForgeryForm", style = "display:none;" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<div class="row g-3 kanban-board" data-project-id="@Model.ProjectId">
     <div class="col-lg-4">
         <div class="kanban-column kanban-column-todo h-100">
             <div class="kanban-column-header">
                 <h2 class="h6 mb-0">Cần làm</h2>
-                <span class="badge bg-secondary">@Model.ToDo.Count</span>
+                <span class="badge bg-secondary kanban-column-count">@Model.ToDo.Count</span>
             </div>
-            <div class="kanban-column-body">
+            <div class="kanban-column-body" data-column="todo">
                 @if (Model.ToDo.Count == 0)
                 {
-                    <p class="text-muted small text-center py-3 mb-0">Không có task</p>
+                    <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
                 }
                 else
                 {
@@ -49,12 +54,12 @@
         <div class="kanban-column kanban-column-progress h-100">
             <div class="kanban-column-header">
                 <h2 class="h6 mb-0">Đang làm</h2>
-                <span class="badge bg-primary">@Model.InProgress.Count</span>
+                <span class="badge bg-primary kanban-column-count">@Model.InProgress.Count</span>
             </div>
-            <div class="kanban-column-body">
+            <div class="kanban-column-body" data-column="inprogress">
                 @if (Model.InProgress.Count == 0)
                 {
-                    <p class="text-muted small text-center py-3 mb-0">Không có task</p>
+                    <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
                 }
                 else
                 {
@@ -70,12 +75,12 @@
         <div class="kanban-column kanban-column-done h-100">
             <div class="kanban-column-header">
                 <h2 class="h6 mb-0">Hoàn thành</h2>
-                <span class="badge bg-success">@Model.Done.Count</span>
+                <span class="badge bg-success kanban-column-count">@Model.Done.Count</span>
             </div>
-            <div class="kanban-column-body">
+            <div class="kanban-column-body" data-column="done">
                 @if (Model.Done.Count == 0)
                 {
-                    <p class="text-muted small text-center py-3 mb-0">Không có task</p>
+                    <p class="text-muted small text-center py-3 mb-0 kanban-empty-msg">Không có task</p>
                 }
                 else
                 {
@@ -90,3 +95,7 @@
 </div>
 
 <a class="btn btn-outline-secondary mt-4" href="@Url.Action("Index", "Project")">← Quay lại dự án</a>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/kanban.js")"></script>
+}
